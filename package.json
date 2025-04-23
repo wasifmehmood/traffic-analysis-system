@@ -1,0 +1,11 @@
+{
+  "name": "traffic-analysis-system",
+  "version": "1.0.0",
+  "description": "Traffic Analysis Sytem",
+  "scripts": {
+    "start:frontend": "cd apps/frontend && npm run dev"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
