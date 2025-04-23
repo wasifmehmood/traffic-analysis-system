@@ -12,7 +12,9 @@
     "format": "prettier --write .",
     "type:check": "tsc --noEmit",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "docker:build": "docker build -t traffic-analysis-web -f DockerFile .",
+    "docker:run": "docker run -p 3001:3001 traffic-analysis-web"
   },
   "dependencies": {
     "@radix-ui/react-navigation-menu": "^1.2.10",
