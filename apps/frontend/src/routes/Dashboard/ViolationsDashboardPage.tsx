@@ -1,100 +1,60 @@
 import { List } from './List';
 import CustomBarChart from '@/UI/Elements/Charts/BarChart/BarChart';
 import CustomPieChart from '@/UI/Elements/Charts/PieChart/PieChart';
-import { Text } from '@/UI/Elements/Text';
-import { Box, Card, Flex, Tabs } from '@radix-ui/themes';
+import { CustomCard } from '@/UI/Elements/Dashboard/Card';
+import ChartCard from '@/UI/Elements/Dashboard/ChartCard';
+import { CustomTabsCard } from '@/UI/Elements/Dashboard/TabsCard';
+import { Card, Flex } from '@radix-ui/themes';
 
 function ViolationsDashboardPage({ trafficData }: any) {
   return (
-    <Flex direction="row">
+    <Flex
+      direction={{ initial: 'column', sm: 'row' }}
+      wrap={'wrap'}
+    >
       <Flex
         direction="column"
-        maxWidth="300px"
+        maxWidth={{ initial: '100%', md: '260px' }}
+        width="100%"
         minWidth="260px"
         className="left-section"
       >
-        <div>
-          <Card>
-            <Text
-              as="div"
-              size="2"
-              weight="bold"
-            >
-              Number of violations
-            </Text>
-            <Text
-              as="div"
-              color="gray"
-              size="8"
-              m={'6'}
-            >
-              4 Violations
-            </Text>
-          </Card>
-        </div>
-        <div>
-          <Card style={{ height: '350px' }}>
-            <Tabs.Root defaultValue="violations-vt">
-              <Tabs.List>
-                <Tabs.Trigger value="violations-vt">Vehicle Type</Tabs.Trigger>
-                <Tabs.Trigger value="violations-st">Severity</Tabs.Trigger>
-              </Tabs.List>
+        <CustomCard
+          label="Violations"
+          value="4"
+        />
 
-              <Box pt="3">
-                <Tabs.Content
-                  value="violations-vt"
-                  style={{ height: '250px' }}
-                >
-                  <Text
-                    as="div"
-                    size="2"
-                    weight="bold"
-                  >
-                    Violations by vehicle type
-                  </Text>
-                  <CustomPieChart />
-                </Tabs.Content>
-
-                <Tabs.Content
-                  value="violations-st"
-                  style={{ height: '250px' }}
-                >
-                  <Text
-                    as="div"
-                    size="2"
-                    weight="bold"
-                  >
-                    Violations by severity
-                  </Text>
-                  <CustomPieChart />
-                </Tabs.Content>
-              </Box>
-            </Tabs.Root>
-          </Card>
-        </div>
+        <CustomTabsCard
+          sections={[
+            {
+              id: 'violations-vt',
+              label: 'Violations by vehicle type',
+              topLabel: 'Vehicle Type',
+              children: <CustomPieChart propsData={trafficData} />,
+            },
+            {
+              id: 'violations-st',
+              label: 'Violations by severity',
+              topLabel: 'Severity',
+              children: <CustomPieChart propsData={trafficData} />,
+            },
+          ]}
+        />
       </Flex>
       <Flex
         direction="column"
         className="middle-section"
+        maxWidth={{ initial: '100%', md: '65vw' }}
+        flexGrow={'1'}
       >
-        <div>
-          <Card style={{ height: '85vh', width: '65vw' }}>
-            <Text
-              as="div"
-              size="2"
-              weight="bold"
-            >
-              Number of violations
-            </Text>
-            <CustomBarChart />
-          </Card>
-        </div>
-        <div></div>
+        <ChartCard label="Violations by Country">
+          <CustomBarChart propsData={trafficData} />
+        </ChartCard>
       </Flex>
       <Flex
         direction="column"
         className="right-section"
-        maxWidth="300px"
+        flexGrow={'1'}
         minWidth="260px"
         style={{ height: '85vh' }}
       >

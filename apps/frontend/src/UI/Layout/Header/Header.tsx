@@ -6,7 +6,7 @@ type Props = {
 
 export function Header({ menuItems }: Props) {
   return (
-    <header className="sticky top-0 z-40 w-full shadow">
+    <header className="sticky top-0 z-40 w-full shadow bg-white">
       <nav className="flex w-full items-center justify-between gap-3 pt-3 pr-4 pb-3 pl-4">
         <Menu menuItems={menuItems} />
       </nav>

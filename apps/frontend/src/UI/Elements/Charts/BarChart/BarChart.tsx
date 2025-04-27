@@ -19,7 +19,7 @@ const data = [
   { country: 'Italy', volume: 349 },
 ];
 
-const CustomBarChart = () => {
+const CustomBarChart = ({ propsData }: any) => {
   return (
     <ResponsiveContainer
       width="100%"
@@ -37,7 +37,11 @@ const CustomBarChart = () => {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="volume" /> {/* X-Axis shows the country */}
-        <YAxis dataKey={'country'} type='category'/> {/* Y-Axis shows the count of users */}
+        <YAxis
+          dataKey={'country'}
+          type="category"
+        />{' '}
+        {/* Y-Axis shows the count of users */}
         <Tooltip />
         <Legend />
         <Bar

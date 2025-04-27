@@ -1,18 +1,10 @@
-import { color } from 'd3';
-import {
-  PieChart,
-  Pie,
-  Sector,
-  Cell,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 const data = [
-  { name: 'Low', value: 400, color: "#0088FE" },
-  { name: 'Medium', value: 300, color: "#00C49F" },
-  { name: 'High', value: 300, color: "#FFBB28" },
-  { name: 'Very High', value: 200, color: "#FF8042" },
+  { name: 'Low', value: 400, color: '#0088FE' },
+  { name: 'Medium', value: 300, color: '#00C49F' },
+  { name: 'High', value: 300, color: '#FFBB28' },
+  { name: 'Very High', value: 200, color: '#FF8042' },
 ];
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -44,7 +36,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-const CustomPieChart = () => {
+const CustomPieChart = ({ propsData }: any) => {
   return (
     <ResponsiveContainer
       width="100%"
