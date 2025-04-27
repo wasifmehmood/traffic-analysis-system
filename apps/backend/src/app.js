@@ -4,6 +4,7 @@ import helmet from 'helmet'
 import router from './routes/index.js'
 import { errorHandler } from './middlewares/errorHandler.js'
 import { notFound } from './middlewares/notFound.js'
+import { initTrafficEventService } from './services/trafficEventService.js'
 
 const app = express()
 
@@ -32,6 +33,8 @@ app.use(
 
 // routes
 app.use('/api/v1', router)
+
+initTrafficEventService()
 
 app.use(notFound)
 app.use(errorHandler)

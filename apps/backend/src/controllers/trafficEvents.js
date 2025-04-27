@@ -1,4 +1,5 @@
 import Models from '../models/index.js'
+import { addClient, removeClient } from '../utils/sseManager.js'
 
 export const postTrafficEvent = async (req, res) => {
   const {
@@ -26,4 +27,19 @@ export const postTrafficEvent = async (req, res) => {
 }
 export const getTrafficEvents = (req, res) => {
   res.send('respond with a resource')
+}
+
+export const subscribeToTrafficEvents = (req, res) => {
+  res.send('respond with a resource')
+  res.setHeader('Content-Type', 'text/event-stream')
+  res.setHeader('Cache-Control', 'no-cache')
+  res.setHeader('Connection', 'keep-alive')
+
+  addClient(res)
+
+  req.on('close', () => {
+    removeClient(res)
+  })
+  // Send an initial message
+  res.write(`data: Connected to server\n\n`)
 }
