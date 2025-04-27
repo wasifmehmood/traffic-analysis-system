@@ -36,7 +36,11 @@ const CustomBarChart = ({ propsData }: any) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="volume" /> {/* X-Axis shows the country */}
+        <XAxis
+          type="number"
+          domain={['dataMin', 'dataMax']}
+        />
+        X-Axis shows the country
         <YAxis
           dataKey={'country'}
           type="category"
