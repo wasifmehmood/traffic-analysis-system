@@ -12,7 +12,7 @@
   },
   "aliases": {
     "components": "@/UI/Elements",
-    "utils": "@/core/helpers/style.utils"
+    "utils": "@/shared/helpers/style.utils"
   },
   "iconLibrary": "lucide"
 }

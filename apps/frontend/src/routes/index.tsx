@@ -1,4 +1,5 @@
-import HomePage from './Home/HomePage';
+import TrafficDashboardPage from './Dashboard/TrafficDashboardPage';
+import DashboardPage from './Dashboard/ViolationsDashboardPage';
 import { Header } from '@/UI/Layout/Header/Header';
 import { useRoutes } from 'react-router-dom';
 
@@ -6,7 +7,11 @@ export function AppRoutes() {
   const routes = [
     {
       path: '*',
-      element: <HomePage />,
+      element: <DashboardPage />,
+    },
+    {
+      path: '/traffic',
+      element: <TrafficDashboardPage />,
     },
   ];
 
@@ -14,7 +19,12 @@ export function AppRoutes() {
 
   return (
     <>
-      <Header menuItems={[{ label: 'Home', href: '/', testId: 'home-link' }]} />
+      <Header
+        menuItems={[
+          { label: 'Violations', href: '/', testId: 'home-link' },
+          { label: 'Traffic', href: '/traffic', testId: 'home-link' },
+        ]}
+      />
       {element}
     </>
   );

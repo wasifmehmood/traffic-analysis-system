@@ -8,7 +8,8 @@
     "docker:down": "docker-compose down",
     "docker:build": "docker-compose build",
     "docker:logs": "docker-compose logs -f",
-    "docker:restart": "docker-compose restart"
+    "docker:restart": "docker-compose restart",
+    "docker:clean": "docker-compose down -v --rmi all"
   },
   "author": "",
   "license": "ISC"
