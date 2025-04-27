@@ -29,17 +29,17 @@ export const getTrafficEvents = (req, res) => {
   res.send('respond with a resource')
 }
 
-export const subscribeToTrafficEvents = (req, res) => {
-  res.send('respond with a resource')
+export const subscribeToTrafficEvents = async (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Cache-Control', 'no-cache')
   res.setHeader('Connection', 'keep-alive')
+  
+  const initialData = await Models.TrafficEvents.findAll({ raw: true })
+  res.write(`data: ${JSON.stringify(initialData)}\n\n`)
 
   addClient(res)
 
   req.on('close', () => {
     removeClient(res)
   })
-  // Send an initial message
-  res.write(`data: Connected to server\n\n`)
 }

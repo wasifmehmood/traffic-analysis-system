@@ -9,9 +9,9 @@ export const removeClient = (client) => {
 }
 
 export const notifyClients = (data) => {
+  if (!data) return
   const payload = JSON.stringify(data)
-  console.log('notifying', payload)
   clients.forEach((client) => {
-    client.write(payload)
+    return client.write(`data: ${payload}\n\n`)
   })
 }

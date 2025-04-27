@@ -7,13 +7,19 @@ type ITrafficData = {
     temp: number;
   };
 };
+
+const BACK_OFF = 2000;
 const useTrafficUpdates = () => {
   const [trafficData, setTrafficData] = useState<ITrafficData[]>([]);
-    console.log('test')
-  useEffect(() => {
-    const eventSource = new EventSource(
-      `${env.API_URL}/v1/traffic-events/subscribe`,
-    );
+  const [attempt, setAttempt] = useState<number>(0);
+  let eventSource: EventSource;
+
+  const setupEventSource = () => {
+    eventSource = new EventSource(`${env.API_URL}/v1/traffic-events/subscribe`);
+
+    eventSource.onopen = () => {
+      setAttempt(0);
+    };
 
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -24,12 +30,20 @@ const useTrafficUpdates = () => {
     eventSource.onerror = (error) => {
       console.error('eventSource error:', error);
       eventSource.close();
+      setAttempt(attempt + 1);
     };
+  };
+
+  useEffect(() => {
+    if (attempt > 3) return;
+    setTimeout(() => {
+      setupEventSource();
+    }, attempt * BACK_OFF);
 
     return () => {
-      eventSource.close();
+      eventSource?.close();
     };
-  }, []);
+  }, [attempt]);
 
   return { trafficData };
 };

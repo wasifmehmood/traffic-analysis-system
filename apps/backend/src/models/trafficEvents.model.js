@@ -60,7 +60,7 @@ export default (sequelize, DataTypes) => {
   }
 
   TrafficEvents.insertEvents = function (events) {
-    TrafficEvents.bulkCreate(events)
+    return TrafficEvents.bulkCreate(events)
   }
 
   TrafficEvents.insertEvent = function ({
@@ -71,7 +71,7 @@ export default (sequelize, DataTypes) => {
     fk_address_id,
     speed_kph
   }) {
-    TrafficEvents.create({
+    return TrafficEvents.create({
       metadata,
       fk_sensor_id,
       fk_violation_id,
