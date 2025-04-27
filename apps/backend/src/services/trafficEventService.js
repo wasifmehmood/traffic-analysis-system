@@ -1,4 +1,4 @@
-import { notifyClients } from '../utils/sseManager'
+import { notifyClients } from '../utils/sseManager.js'
 
 export const initTrafficEventService = (data) => {
   setInterval(() => {

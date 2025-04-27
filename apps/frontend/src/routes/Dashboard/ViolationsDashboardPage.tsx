@@ -4,7 +4,7 @@ import CustomPieChart from '@/UI/Elements/Charts/PieChart/PieChart';
 import { Text } from '@/UI/Elements/Text';
 import { Box, Card, Flex, Tabs } from '@radix-ui/themes';
 
-function ViolationsDashboardPage() {
+function ViolationsDashboardPage({ trafficData }: any) {
   return (
     <Flex direction="row">
       <Flex

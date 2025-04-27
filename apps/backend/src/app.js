@@ -17,7 +17,7 @@ app.use(
 )
 app.use(express.urlencoded({ limit: '50mb', extended: false }))
 
-const allowedOrigins = ['http://localhost:5173']
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:3001']
 app.use(
   cors({
     origin: function (origin, callback) {

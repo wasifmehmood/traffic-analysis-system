@@ -23,7 +23,7 @@ const trafficFlowData = [
   { xAxis: '13:15:00', yAxis: 100 },
 ];
 
-function TrafficDashboardPage() {
+function TrafficDashboardPage({ trafficData }: any) {
   return (
     <Flex direction="row">
       <Flex

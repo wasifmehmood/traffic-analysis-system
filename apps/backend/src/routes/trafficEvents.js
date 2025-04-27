@@ -7,6 +7,6 @@ import {
 } from '../controllers/trafficEvents.js'
 
 router.post('/', postTrafficEvent)
-router.post('/subscribe', subscribeToTrafficEvents)
+router.get('/subscribe', subscribeToTrafficEvents)
 
 export default router
