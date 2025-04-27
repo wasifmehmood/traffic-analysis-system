@@ -19,19 +19,19 @@ export default (sequelize, DataTypes) => {
       },
       street_name: {
         allowNull: true,
-        type: DataTypes.String
+        type: DataTypes.STRING
       },
       city: {
         allowNull: false,
-        type: DataTypes.String
+        type: DataTypes.STRING
       },
       state: {
         allowNull: false,
-        type: DataTypes.String
+        type: DataTypes.STRING
       },
       zip_code: {
         allowNull: false,
-        type: DataTypes.String
+        type: DataTypes.STRING
       },
       longitude: {
         allowNull: false,
@@ -43,7 +43,9 @@ export default (sequelize, DataTypes) => {
       }
     },
     {
-      timeStamps: true
+      timestamps: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
     }
   )
 

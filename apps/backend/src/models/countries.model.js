@@ -6,11 +6,11 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: DataTypes.INTEGER
+        type: DataTypes
       },
       name: {
         allowNull: false,
-        type: DataTypes.String
+        type: DataTypes.STRING
       },
       iso_code: {
         allowNull: true,
@@ -18,7 +18,9 @@ export default (sequelize, DataTypes) => {
       }
     },
     {
-      timeStamps: true
+      timestamps: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
     }
   )
 

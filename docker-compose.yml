@@ -83,3 +83,4 @@ volumes:
 
 # To find db ip-address for connection
 # docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' traffic-analysis-system-postgres-1
+# 172.22.0.2

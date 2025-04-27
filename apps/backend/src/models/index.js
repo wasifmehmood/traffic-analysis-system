@@ -1,9 +1,7 @@
-'use strict'
-
 import { readdirSync } from 'fs'
 import { dirname, join } from 'path'
 import { Sequelize } from 'sequelize'
-import config from '../config'
+import config from '../config/index.js'
 import { fileURLToPath } from 'url'
 import { camelCase, upperFirst } from 'lodash-es'
 const __filename = fileURLToPath(import.meta.url)
@@ -25,9 +23,13 @@ let sequelize = new Sequelize(
       acquire: config.get('db.pool.acquire'),
       idle: config.get('db.pool.idle')
     },
-    logging: config.get('env') === 'development' ? console.info : false
+    logging: config.get('env') === 'development' ? console.info : false,
+    define: {
+      timestamps: true
+    }
   }
-)(async () => {
+)
+;(async () => {
   try {
     await sequelize.authenticate()
     console.info('Connection has been established successfully.')
@@ -41,8 +43,11 @@ readdirSync(__dirname)
   .filter((file) => {
     return file.endsWith('.model.js')
   })
-  .forEach((file) => {
-    const model = require(join(__dirname, file))(sequelize, Sequelize.DataTypes)
+  .forEach(async (file) => {
+    const model = (await import(join(__dirname, file))).default(
+      sequelize,
+      Sequelize.DataTypes
+    )
     let name = upperFirst(camelCase(model.name))
     db[name] = model
   })

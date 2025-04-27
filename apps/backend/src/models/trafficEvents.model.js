@@ -47,9 +47,39 @@ export default (sequelize, DataTypes) => {
       }
     },
     {
-      timeStamps: true
+      timestamps: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
     }
   )
+
+  TrafficEvents.associate = function (models) {
+    TrafficEvents.belongsTo(models.Sensors)
+    TrafficEvents.belongsTo(models.VehicleTypes)
+    TrafficEvents.belongsTo(models.Violations)
+  }
+
+  TrafficEvents.insertEvents = function (events) {
+    TrafficEvents.bulkCreate(events)
+  }
+
+  TrafficEvents.insertEvent = function ({
+    metadata,
+    fk_sensor_id,
+    fk_violation_id,
+    fk_vehicle_type_id,
+    fk_address_id,
+    speed_kph
+  }) {
+    TrafficEvents.create({
+      metadata,
+      fk_sensor_id,
+      fk_violation_id,
+      fk_vehicle_type_id,
+      fk_address_id,
+      speed_kph
+    })
+  }
 
   return TrafficEvents
 }

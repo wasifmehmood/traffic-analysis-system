@@ -24,9 +24,9 @@ export default (sequelize, DataTypes) => {
       description: {
         allowNull: true,
         type: DataTypes.STRING
-      },
+      }
     },
-    { timeStamps: true }
+    { timestamps: true, createdAt: 'created_at', updatedAt: 'updated_at' }
   )
 
   return Sensors

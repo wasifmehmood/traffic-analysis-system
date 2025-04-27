@@ -4,173 +4,197 @@
 export default {
   async up(queryInterface, Sequelize) {
     await Promise.all([
-      queryInterface.createTable(
-        'countries',
-        {
-          id: {
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            type: Sequelize.INTEGER
-          },
-          name: {
-            allowNull: false,
-            type: Sequelize.STRING
-          },
-          iso_code: {
-            allowNull: true,
-            type: Sequelize.INTEGER
+      queryInterface.createTable('countries', {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER
+        },
+        name: {
+          allowNull: false,
+          type: Sequelize.STRING
+        },
+        iso_code: {
+          allowNull: true,
+          type: Sequelize.INTEGER
+        },
+        created_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        updated_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        }
+      }),
+      queryInterface.createTable('addresses', {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER
+        },
+        fk_country_id: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'countries',
+            key: 'id'
           }
         },
-        { timestamps: true }
-      ),
-      queryInterface.createTable(
-        'addresses',
-        {
-          id: {
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            type: Sequelize.INTEGER
-          },
-          fk_country_id: {
-            allowNull: false,
-            type: Sequelize.INTEGER,
-            references: {
-              model: 'countries',
-              key: 'id'
-            }
-          },
-          street_name: {
-            allowNull: false,
-            type: Sequelize.STRING
-          },
-          city: {
-            allowNull: false,
-            type: Sequelize.STRING
-          },
-          state: {
-            allowNull: false,
-            type: Sequelize.STRING
-          },
-          zip_code: {
-            allowNull: false,
-            type: Sequelize.STRING
-          },
-          longitude: {
-            allowNull: false,
-            type: Sequelize.FLOAT
-          },
-          latitude: {
-            allowNull: false,
-            type: Sequelize.FLOAT
+        street_name: {
+          allowNull: false,
+          type: Sequelize.STRING
+        },
+        city: {
+          allowNull: false,
+          type: Sequelize.STRING
+        },
+        state: {
+          allowNull: false,
+          type: Sequelize.STRING
+        },
+        zip_code: {
+          allowNull: false,
+          type: Sequelize.STRING
+        },
+        longitude: {
+          allowNull: false,
+          type: Sequelize.FLOAT
+        },
+        latitude: {
+          allowNull: false,
+          type: Sequelize.FLOAT
+        },
+        created_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        updated_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        }
+      }),
+      queryInterface.createTable('sensors', {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER
+        },
+        fk_address_id: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'addresses',
+            key: 'id'
           }
         },
-        { timestamps: true }
-      ),
-      queryInterface.createTable(
-        'sensors',
-        {
-          id: {
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            type: Sequelize.INTEGER
-          },
-          fk_address_id: {
-            allowNull: false,
-            type: Sequelize.INTEGER,
-            references: {
-              model: 'addresses',
-              key: 'id'
-            }
-          },
-          name: {
-            allowNull: false,
-            type: Sequelize.STRING
-          },
-          description: {
-            allowNull: true,
-            type: Sequelize.STRING
+        name: {
+          allowNull: false,
+          type: Sequelize.STRING
+        },
+        description: {
+          allowNull: true,
+          type: Sequelize.STRING
+        },
+        created_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        updated_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        }
+      }),
+      queryInterface.createTable('vehicle_types', {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER
+        },
+        name: {
+          allowNull: false,
+          type: Sequelize.STRING
+        },
+        created_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        updated_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        }
+      }),
+      queryInterface.createTable('violations', {
+        id: {
+          allowNull: false,
+          autoIncrement: true,
+          primaryKey: true,
+          type: Sequelize.INTEGER
+        },
+        name: {
+          allowNull: false,
+          type: Sequelize.STRING
+        },
+        created_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        updated_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        }
+      }),
+      queryInterface.createTable('traffic_events', {
+        id: {
+          allowNull: false,
+          primaryKey: true,
+          type: Sequelize.STRING(26)
+        },
+        fk_sensor_id: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'sensors',
+            key: 'id'
           }
         },
-        { timestamps: true }
-      ),
-      queryInterface.createTable(
-        'vehicle_types',
-        {
-          id: {
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            type: Sequelize.INTEGER
-          },
-          name: {
-            allowNull: false,
-            type: Sequelize.STRING
+        fk_violation_id: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'violations',
+            key: 'id'
           }
         },
-        { timestamps: true }
-      ),
-      queryInterface.createTable(
-        'violations',
-        {
-          id: {
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            type: Sequelize.INTEGER
-          },
-          name: {
-            allowNull: false,
-            type: Sequelize.STRING
+        fk_vehicle_type_id: {
+          allowNull: false,
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'vehicle_types',
+            key: 'id'
           }
         },
-        { timestamps: true }
-      ),
-      queryInterface.createTable(
-        'traffic_events',
-        {
-          id: {
-            allowNull: false,
-            primaryKey: true,
-            type: Sequelize.STRING(26)
-          },
-          fk_sensor_id: {
-            allowNull: false,
-            type: Sequelize.INTEGER,
-            references: {
-              model: 'sensors',
-              key: 'id'
-            }
-          },
-          fk_violation_id: {
-            allowNull: false,
-            type: Sequelize.INTEGER,
-            references: {
-              model: 'violations',
-              key: 'id'
-            }
-          },
-          fk_vehicle_type_id: {
-            allowNull: false,
-            type: Sequelize.INTEGER,
-            references: {
-              model: 'vehicle_types',
-              key: 'id'
-            }
-          },
-          metadata: {
-            allowNull: false,
-            type: Sequelize.JSON
-          },
-          speed_kph: {
-            allowNull: false,
-            type: Sequelize.FLOAT
-          }
+        metadata: {
+          allowNull: false,
+          type: Sequelize.JSON
         },
-        { timestamps: true }
-      )
+        speed_kph: {
+          allowNull: false,
+          type: Sequelize.FLOAT
+        },
+        created_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        },
+        updated_at: {
+          allowNull: false,
+          type: Sequelize.DATE
+        }
+      })
     ])
   },
 
