@@ -1,0 +1,85 @@
+services:
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: DockerFile
+      args:
+        - NODE_ENV=development
+    ports:
+      - "${FRONTEND_PORT:-3001}:3001"
+    volumes:
+      - ./apps/frontend:/app
+      - frontend_node_modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_API_URL=http://localhost:${BACKEND_PORT:-3000}/api
+      - VITE_HOST=0.0.0.0
+      - VITE_PORT=3001
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped
+    command: npm run dev -- --host 0.0.0.0 --port 3001
+
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: DockerFile
+    ports:
+      - "${BACKEND_PORT:-3000}:3000"
+    volumes:
+      - ./apps/backend:/app
+      - backend_node_modules:/app/node_modules
+      - ./apps/backend/database:/app/database
+    environment:
+      - PORT=${BACKEND_PORT:-3000}
+      - DB_DIALECT=postgres
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-traffic_analysis_db}
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    restart: unless-stopped
+    command: sh -c "npm run db:migrate && npm run db:seed:all && npm run start"
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_USER=${DB_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=${DB_NAME:-traffic_analysis_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "80:80"
+    environment:
+    - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL:-admin@test.com}
+    - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD:-admin}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  frontend_node_modules:
+  backend_node_modules:
+
+# To find db ip-address for connection
+# docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' traffic-analysis-system-postgres-1

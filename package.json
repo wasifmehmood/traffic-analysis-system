@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "Traffic Analysis Sytem",
   "scripts": {
-    "start:frontend": "cd apps/frontend && npm run dev"
+    "start:frontend": "cd apps/frontend && npm run dev",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "docker:logs": "docker-compose logs -f",
+    "docker:restart": "docker-compose restart"
   },
   "author": "",
   "license": "ISC"

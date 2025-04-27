@@ -38,56 +38,56 @@ const config = convict({
       doc: 'Database host name/IP',
       format: String,
       default: '127.0.0.1',
-      env: 'DATABASE_HOST'
+      env: 'DB_HOST'
     },
     name: {
       doc: 'Database name',
       format: String,
       default: 'database_development',
-      env: 'DATABASE_NAME'
+      env: 'DB_NAME'
     },
     username: {
       doc: 'db user',
       format: String,
       default: 'root',
-      env: 'DATABASE_USERNAME'
+      env: 'DB_USERNAME'
     },
     password: {
       doc: 'db password',
       format: '*',
       default: null,
-      env: 'DATABASE_PASSWORD'
+      env: 'DB_PASSWORD'
     },
     port: {
       doc: 'db port',
       format: String,
       default: '5432',
-      env: 'DATABASE_PORT'
+      env: 'DB_PORT'
     },
     pool: {
       max: {
         doc: 'Maximum number of connections in the pool',
         format: Number,
         default: 30,
-        env: 'DATABASE_POOL_MAX'
+        env: 'DB_POOL_MAX'
       },
       min: {
         doc: 'Minimum number of connections in the pool',
         format: Number,
         default: 5,
-        env: 'DATABASE_POOL_MIN'
+        env: 'DB_POOL_MIN'
       },
       idle: {
         doc: 'Maximum time, in milliseconds, that a connection can be idle before being released',
         format: Number,
         default: 10000,
-        env: 'DATABASE_POOL_IDLE'
+        env: 'DB_POOL_IDLE'
       },
       acquire: {
         doc: 'Maximum time, in milliseconds, to wait for a connection from the pool',
         format: Number,
         default: 30000,
-        env: 'DATABASE_POOL_ACQUIRE'
+        env: 'DB_POOL_ACQUIRE'
       }
     }
   }

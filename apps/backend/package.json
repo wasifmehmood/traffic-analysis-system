@@ -7,10 +7,11 @@
     "format": "prettier --write .",
     "lint": "eslint . ",
     "lint:fix": "eslint . --fix",
-    "db:migrate": "npx sequelize db:create && npx sequelize db:migrate",
+    "db:migrate": "npx sequelize db:migrate",
     "db:migrate:create": "npx sequelize migration:generate --name",
     "db:migrate:undo": "npx sequelize db:migrate:undo",
     "db:migrate:status": "npx sequelize db:migrate:status",
+    "db:seed:all": "npx sequelize db:seed:all",
     "test:unit": "jest --forceExit --colors -c jest.config.unit.cjs"
   },
   "dependencies": {
@@ -22,11 +23,14 @@
     "helmet": "^8.1.0",
     "http-errors": "~1.6.3",
     "lodash-es": "^4.17.21",
+    "pg": "^8.15.6",
     "pino": "^9.6.0",
-    "sequelize": "^6.37.7"
+    "sequelize": "^6.37.7",
+    "ulid": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.1",
+    "@faker-js/faker": "^9.7.0",
     "@jest/globals": "^29.7.0",
     "eslint": "^9.25.1",
     "globals": "^16.0.0",
