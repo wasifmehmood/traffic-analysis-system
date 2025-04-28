@@ -25,13 +25,13 @@ npm run docker:up
 http://localhost:3001
 ```
 
-## Architecture
+# Architectures
 
-### System Architecture
+# System Architecture
 
 ![Alt text](./architecture/traffic-analysis-system-architecture.png?raw=true "Title")
 
-### Database Architecture
+# Database Architecture
 
 ![Alt text](./architecture/db-structure-1.png?raw=true "Title")
 
