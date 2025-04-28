@@ -37,7 +37,7 @@ http://localhost:3001
 
 # Scalable Architecture
 
-![Alt text](./architecture/Scalable-Architecture?raw=true "Title")
+![Alt text](./architecture/Scalable-Architecture.png?raw=true "Title")
 
 # Dev Flow
 
