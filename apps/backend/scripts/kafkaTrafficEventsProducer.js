@@ -1,6 +1,5 @@
 import { Kafka } from 'kafkajs'
 import { faker } from '@faker-js/faker'
-import { ulid } from 'ulid'
 
 const kafka = new Kafka({
   clientId: 'traffic-events',
@@ -11,7 +10,6 @@ const producer = kafka.producer()
 
 const generateTrafficEvents = () => {
   return {
-    id: ulid(),
     fk_sensor_id: faker.number.int({ min: 1, max: 80 }),
     fk_violation_id: faker.number.int({ min: 1, max: 5 }),
     fk_vehicle_type_id: faker.number.int({ min: 1, max: 5 }),
@@ -32,13 +30,13 @@ const generateTrafficEvents = () => {
 
 const sendTrafficEvents = async (numEvents) => {
   const messages = []
-  for (let i = 0; i < numEvents; i++) {
-    const trafficEventData = generateTrafficEvents()
-    messages.push({
-      value: JSON.stringify(trafficEventData)
-    })
-  }
   try {
+    for (let i = 0; i < numEvents; i++) {
+      const trafficEventData = generateTrafficEvents()
+      messages.push({
+        value: JSON.stringify(trafficEventData)
+      })
+    }
     await producer.send({
       topic: 'traffic-events',
       messages: messages

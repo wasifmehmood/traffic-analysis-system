@@ -1,6 +1,7 @@
 import { db as Models } from '../models/index.js'
 import { Kafka } from 'kafkajs'
 import { notifyClients } from '../utils/sseManager.js'
+import { logger } from '../utils/logger.js'
 
 const BATCH_SIZE = 50
 let batch = []
@@ -15,23 +16,26 @@ export const initTrafficEventService = async () => {
 
   try {
     await consumer.connect()
-    console.log('Kafka consumer connected')
+    logger.info('Kafka consumer connected')
     await consumer.subscribe({ topic: 'traffic-events', fromBeginning: false })
-    console.log('Kafka consumer subcscribe')
+    logger.info('Kafka consumer subcscribe')
   } catch (error) {
-    console.error('Failed to connect/subcscribe to Kafka:', error)
+    logger.error('Failed to connect/subcscribe to Kafka:', error)
     return
   }
 
   consumer.run({
-    eachMessage: async ({ message }) => {
+    eachMessage: async ({ message, uncommittedOffsets }) => {
       const data = JSON.parse(message.value.toString())
       batch.push(data)
 
       if (batch.length >= BATCH_SIZE) {
+        logger.info(`Batch reached size, inserting... ${data}`)
         const trafficEvents = await Models.TrafficEvents.insertEvents(batch)
         batch = []
+        logger.info('Batch cleared after insertion:', batch.length === 0)
         notifyClients(trafficEvents)
+        await consumer.commitOffsets(uncommittedOffsets)
       }
     }
   })
@@ -39,6 +43,7 @@ export const initTrafficEventService = async () => {
 
 setInterval(() => {
   if (batch.length) {
+    logger.info(`inserting, clearing and sending... ${batch.length}`)
     const trafficEvents = Models.TrafficEvents.insertEvents(batch)
     batch = []
     notifyClients(trafficEvents)

@@ -27,9 +27,8 @@ export const postTrafficEvent = async (req, res) => {
 }
 export const getAnalytics = async (req, res) => {
   const [
-    analyticsCount,
+    violationsCount,
     analytics,
-    trafficViolationAnalyticsByDay,
     trafficViolationByCountry
   ] = await Promise.all([
     Models.TrafficEvents.getTrafficViolationCount(),
@@ -40,9 +39,8 @@ export const getAnalytics = async (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
-      analyticsCount,
+      violationsCount,
       analytics,
-      trafficViolationAnalyticsByDay,
       trafficViolationByCountry
     }
   })

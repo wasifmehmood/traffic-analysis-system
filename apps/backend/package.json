@@ -12,7 +12,8 @@
     "db:migrate:undo": "npx sequelize db:migrate:undo",
     "db:migrate:status": "npx sequelize db:migrate:status",
     "db:seed:all": "npx sequelize db:seed:all",
-    "test:unit": "jest --forceExit --colors -c jest.config.unit.cjs"
+    "test:unit": "jest --forceExit --colors -c jest.config.unit.cjs",
+    "send:events": "node scripts/kafkaTrafficEventsProducer.js"
   },
   "dependencies": {
     "convict": "^6.2.4",

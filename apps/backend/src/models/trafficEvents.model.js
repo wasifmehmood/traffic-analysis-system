@@ -1,4 +1,5 @@
 import { ulid } from 'ulid'
+import { Op } from 'sequelize'
 
 export default (sequelize, DataTypes) => {
   const TrafficEvents = sequelize.define(
@@ -115,6 +116,11 @@ export default (sequelize, DataTypes) => {
           attributes: ['name']
         }
       ],
+      where: {
+        created_at: {
+          [Op.gte]: new Date().setDate(new Date().getDate() - 7)
+        }
+      },
       group: ['fk_violation_id', 'violation.id']
     })
 
