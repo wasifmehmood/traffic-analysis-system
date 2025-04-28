@@ -7,13 +7,13 @@
 
 ## Install & Start
 
-- Open/Run Docker
-
+1. Open/Run Docker
+2. In the root
 ```shell
 npm run docker:up
 ```
 
-## Open the link
+3. ## Open the link
 
 ```shell
 http://localhost:3001
