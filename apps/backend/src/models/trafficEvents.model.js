@@ -1,5 +1,5 @@
 import { ulid } from 'ulid'
-import { Op } from 'sequelize'
+import { Op, QueryTypes } from 'sequelize'
 
 export default (sequelize, DataTypes) => {
   const TrafficEvents = sequelize.define(
@@ -9,7 +9,7 @@ export default (sequelize, DataTypes) => {
         allowNull: false,
         primaryKey: true,
         type: DataTypes.STRING(26),
-        defaultValue: ulid()
+        defaultValue: () => ulid()
       },
       fk_sensor_id: {
         allowNull: false,
@@ -91,40 +91,17 @@ export default (sequelize, DataTypes) => {
     })
   }
 
-  TrafficEvents.getTrafficViolationAnalytics = async function () {
-    const data = await TrafficEvents.findAll({
-      attributes: [
-        'fk_violation_id',
-        [
-          TrafficEvents.sequelize.fn(
-            'COUNT',
-            TrafficEvents.sequelize.col('fk_violation_id')
-          ),
-          'count'
-        ],
-        [
-          TrafficEvents.sequelize.fn(
-            'AVG',
-            TrafficEvents.sequelize.col('speed_kph')
-          ),
-          'avg_speed_kph'
-        ]
-      ],
-      include: [
-        {
-          association: 'violation',
-          attributes: ['name']
-        }
-      ],
-      where: {
-        created_at: {
-          [Op.gte]: new Date().setDate(new Date().getDate() - 7)
-        }
-      },
-      group: ['fk_violation_id', 'violation.id']
-    })
-
-    return data
+  TrafficEvents.getTrafficViolationByVehicleType = async function () {
+    const result = await sequelize.query(
+      `select COUNT(v.id) as violations, v.id, v.name from traffic_events as te
+      JOIN vehicle_types as v ON v.id = te.fk_violation_id
+      GROUP BY v.id
+      ORDER BY violations DESC`,
+      {
+        type: QueryTypes.SELECT
+      }
+    )
+    return result
   }
 
   TrafficEvents.getTrafficViolationCount = async function () {
@@ -132,64 +109,53 @@ export default (sequelize, DataTypes) => {
 
     return data
   }
-
-  TrafficEvents.getTrafficViolationByCountry = async function () {
+  TrafficEvents.getRecentTrafficViolations = async function () {
     const data = await TrafficEvents.findAll({
-      attributes: [
-        'fk_violation_id',
-        [
-          TrafficEvents.sequelize.fn(
-            'COUNT',
-            TrafficEvents.sequelize.col('fk_violation_id')
-          ),
-          'count'
-        ],
-        [
-          TrafficEvents.sequelize.fn(
-            'AVG',
-            TrafficEvents.sequelize.col('speed_kph')
-          ),
-          'avg_speed_kph'
-        ],
-        'sensor->address.id',
-        'sensor->address.fk_country_id',
-        'sensor->address->country.name'
-      ],
       include: [
         {
           association: 'violation',
-          attributes: ['name']
-        },
-        {
-          association: 'sensor',
-          attributes: ['fk_address_id'],
-          include: [
-            {
-              association: 'address',
-              attributes: ['id', 'fk_country_id'],
-              include: [
-                {
-                  association: 'country',
-                  attributes: ['name'],
-                  required: true
-                }
-              ]
-            }
-          ]
+          attributes: ['name', 'id']
         }
       ],
-      group: [
-        'fk_violation_id',
-        'violation.id',
-        'sensor.id',
-        'sensor->address.id',
-        'sensor->address->country.id',
-        'sensor->address.fk_country_id',
-        'sensor->address->country.name'
-      ]
+      where: {
+        created_at: {
+          [Op.gte]: new Date().setDate(new Date().getDate() - 1)
+        }
+      },
+      order: [['created_at', 'DESC']],
+      limit: 100
     })
 
     return data
+  }
+
+  TrafficEvents.getTrafficViolationByCountry = async function () {
+    const result = await sequelize.query(
+      `select c.id, COUNT(c.id) as violations, c.name from traffic_events as te
+      JOIN sensors as s ON s.id = te.fk_sensor_id
+      JOIN addresses as ad ON ad.id = s.fk_address_id
+      JOIN countries as c ON c.id = ad.fk_country_id
+      GROUP BY c.id
+      ORDER BY violations DESC
+      LIMIT 10`,
+      {
+        type: QueryTypes.SELECT
+      }
+    )
+    return result
+  }
+
+  TrafficEvents.getSpeedTrafficViolationsInLastHour = async function () {
+    const result = await sequelize.query(
+      `select AVG(te.speed_kph) as avg_speed_kph, te.created_at from traffic_events as te
+      where te.created_at > now() - interval '2' hour
+      GROUP BY te.created_at
+      `,
+      {
+        type: QueryTypes.SELECT
+      }
+    )
+    return result
   }
 
   return TrafficEvents

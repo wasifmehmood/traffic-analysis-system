@@ -1,3 +1,4 @@
+import { SpeedViolationsInLastHour } from '@/hooks/useTrafficUpdates';
 import {
   LineChart,
   Line,
@@ -9,17 +10,14 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const data = [
-  { date: '13:15:00', speed: 100 },
-  { date: '13:15:00', speed: 80 },
-  { date: '13:15:00', speed: 110 },
-  { date: '13:15:00', speed: 75 },
-  { date: '13:15:00', speed: 85 },
-  { date: '13:15:00', speed: 95 },
-  { date: '13:15:00', speed: 100 },
-];
-
-const CustomLineChart = ({ data }) => {
+const CustomLineChart = ({ data }: { data: SpeedViolationsInLastHour }) => {
+  const formattedData = data.map((item) => ({
+    ...item,
+    created_at: new Date(item.created_at).toLocaleString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+    }),
+  }));
   return (
     <ResponsiveContainer
       width="100%"
@@ -28,7 +26,7 @@ const CustomLineChart = ({ data }) => {
       <LineChart
         width={500}
         height={300}
-        data={data}
+        data={formattedData}
         margin={{
           top: 5,
           right: 30,
@@ -37,14 +35,14 @@ const CustomLineChart = ({ data }) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="xAxis" />
-        <YAxis />
+        <XAxis dataKey="created_at" />
+        <YAxis dataKey={'avg_speed_kph'} />
         <Tooltip />
         <Legend />
         <Line
           type="monotone"
-          dataKey="yAxis"
-          label="speed"
+          dataKey="avg_speed_kph"
+          label="Average Speed (kph)"
           stroke="#8884d8"
           activeDot={{ r: 8 }}
         />

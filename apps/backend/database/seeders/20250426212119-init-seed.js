@@ -7,7 +7,7 @@ import { ulid } from 'ulid'
 export default {
   async up(queryInterface, Sequelize) {
     // Create many countries
-    const countryData = Array.from({ length: 5 }).map(() => ({
+    const countryData = Array.from({ length: 20 }).map(() => ({
       name: faker.location.country(),
       iso_code: faker.number.int({ min: 1, max: 999 }),
       created_at: new Date(),

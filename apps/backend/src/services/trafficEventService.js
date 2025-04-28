@@ -31,21 +31,45 @@ export const initTrafficEventService = async () => {
 
       if (batch.length >= BATCH_SIZE) {
         logger.info(`Batch reached size, inserting... ${data}`)
-        const trafficEvents = await Models.TrafficEvents.insertEvents(batch)
+        await Models.TrafficEvents.insertEvents(batch)
         batch = []
+        await getAnalyticsAndNotify()
         logger.info('Batch cleared after insertion:', batch.length === 0)
-        notifyClients(trafficEvents)
         await consumer.commitOffsets(uncommittedOffsets)
       }
     }
   })
 }
 
-setInterval(() => {
+setInterval(async () => {
   if (batch.length) {
     logger.info(`inserting, clearing and sending... ${batch.length}`)
-    const trafficEvents = Models.TrafficEvents.insertEvents(batch)
+    await Models.TrafficEvents.insertEvents(batch)
     batch = []
-    notifyClients(trafficEvents)
+    await getAnalyticsAndNotify()
   }
 }, 5000)
+
+const getAnalyticsAndNotify = async () => {
+  const [
+    violationsCount,
+    violationsByVehicleType,
+    trafficViolationByCountry,
+    recentTrafficViolations,
+    speedViolationsInLastHour
+  ] = await Promise.all([
+    Models.TrafficEvents.getTrafficViolationCount(),
+    Models.TrafficEvents.getTrafficViolationByVehicleType(),
+    Models.TrafficEvents.getTrafficViolationByCountry(),
+    Models.TrafficEvents.getRecentTrafficViolations(),
+    Models.TrafficEvents.getSpeedTrafficViolationsInLastHour()
+  ])
+  notifyClients({
+    violationsCount,
+    violationsByVehicleType,
+    trafficViolationByCountry,
+    recentTrafficViolations,
+    speedViolationsInLastHour
+  })
+  return
+}

@@ -1,11 +1,8 @@
+import { VehicleTypesViolations } from '@/hooks/useTrafficUpdates';
+import { memo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
-const data = [
-  { name: 'Low', value: 400, color: '#0088FE' },
-  { name: 'Medium', value: 300, color: '#00C49F' },
-  { name: 'High', value: 300, color: '#FFBB28' },
-  { name: 'Very High', value: 200, color: '#FF8042' },
-];
+const ColorArray = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -15,7 +12,6 @@ const renderCustomizedLabel = ({
   innerRadius,
   outerRadius,
   percent,
-  index,
 }) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -34,7 +30,17 @@ const renderCustomizedLabel = ({
   );
 };
 
-const CustomPieChart = ({ propsData }: any) => {
+type Props = {
+  props: VehicleTypesViolations;
+};
+
+const CustomPieChart = memo(({ props }: Props) => {
+  const data = props.map((item) => ({
+    ...item,
+    violations: Number(item.violations),
+    color: ColorArray[Math.floor(Math.random() * ColorArray.length)],
+  }));
+
   return (
     <ResponsiveContainer
       width="100%"
@@ -52,7 +58,7 @@ const CustomPieChart = ({ propsData }: any) => {
           label={renderCustomizedLabel}
           outerRadius={80}
           fill="#8884d8"
-          dataKey="value"
+          dataKey="violations"
         >
           {data.map((entry, index) => (
             <Cell
@@ -65,6 +71,6 @@ const CustomPieChart = ({ propsData }: any) => {
       </PieChart>
     </ResponsiveContainer>
   );
-};
+});
 
 export default CustomPieChart;

@@ -1,8 +1,8 @@
 import { Text } from '@/UI/Elements/Text';
 import { Box, Card, Tabs } from '@radix-ui/themes';
-import { JSX } from 'react';
+import { JSX, memo } from 'react';
 
-const CustomTabsCard = ({
+const CustomTabsCharts = memo(({
   sections,
 }: {
   sections: Array<{
@@ -13,8 +13,8 @@ const CustomTabsCard = ({
   }>;
 }) => {
   return (
-    <Card style={{ height: '350px' }}>
-      <Tabs.Root defaultValue="violations-vt">
+    <Card style={{ height: '85vh' }}>
+      <Tabs.Root defaultValue="violations-by-country">
         <Tabs.List>
           {sections
             ? sections.map(({ id, topLabel }) => (
@@ -34,7 +34,7 @@ const CustomTabsCard = ({
                 <Tabs.Content
                   key={id}
                   value={id}
-                  style={{ height: '250px' }}
+                  style={{ height: '73vh' }}
                 >
                   <Text
                     as="div"
@@ -51,6 +51,6 @@ const CustomTabsCard = ({
       </Tabs.Root>
     </Card>
   );
-};
+});
 
-export { CustomTabsCard };
+export { CustomTabsCharts };

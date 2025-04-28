@@ -1,3 +1,4 @@
+import { TrafficViolationsByCountry } from '@/hooks/useTrafficUpdates';
 import {
   BarChart as RechartsBarChart,
   Bar,
@@ -9,17 +10,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-const data = [
-  { country: 'USA', volume: 400 },
-  { country: 'Canada', volume: 300 },
-  { country: 'Germany', volume: 200 },
-  { country: 'UK', volume: 278 },
-  { country: 'Australia', volume: 189 },
-  { country: 'France', volume: 239 },
-  { country: 'Italy', volume: 349 },
-];
-
-const CustomBarChart = ({ propsData }: any) => {
+const CustomBarChart = ({ data }: { data: TrafficViolationsByCountry }) => {
   return (
     <ResponsiveContainer
       width="100%"
@@ -36,20 +27,15 @@ const CustomBarChart = ({ propsData }: any) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis
-          type="number"
-          domain={['dataMin', 'dataMax']}
-        />
-        X-Axis shows the country
+        <XAxis allowDataOverflow={false} />
         <YAxis
-          dataKey={'country'}
+          dataKey={'name'}
           type="category"
-        />{' '}
-        {/* Y-Axis shows the count of users */}
+        />
         <Tooltip />
         <Legend />
         <Bar
-          dataKey="volume"
+          dataKey="violations"
           fill="#8884d8"
         />
       </RechartsBarChart>

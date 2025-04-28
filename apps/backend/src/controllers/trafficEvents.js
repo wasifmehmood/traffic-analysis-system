@@ -33,8 +33,29 @@ export const subscribeToTrafficEvents = async (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Cache-Control', 'no-cache')
   res.setHeader('Connection', 'keep-alive')
-  const initialData = await Models.TrafficEvents.findAll({ raw: true })
-  res.write(`data: ${JSON.stringify(initialData)}\n\n`)
+
+  const [
+    violationsCount,
+    violationsByVehicleType,
+    trafficViolationByCountry,
+    recentTrafficViolations,
+    speedViolationsInLastHour
+  ] = await Promise.all([
+    Models.TrafficEvents.getTrafficViolationCount(),
+    Models.TrafficEvents.getTrafficViolationByVehicleType(),
+    Models.TrafficEvents.getTrafficViolationByCountry(),
+    Models.TrafficEvents.getRecentTrafficViolations(),
+    Models.TrafficEvents.getSpeedTrafficViolationsInLastHour()
+  ])
+  res.write(
+    `data: ${JSON.stringify({
+      violationsCount,
+      violationsByVehicleType,
+      trafficViolationByCountry,
+      recentTrafficViolations,
+      speedViolationsInLastHour
+    })}\n\n`
+  )
 
   addClient(res)
 

@@ -1,12 +1,13 @@
 import { Text } from '@/UI/Elements/Text';
 import { Card } from '@radix-ui/themes';
+import { memo } from 'react';
 
 type Props = {
   label: string;
-  value: string;
+  value: number;
 };
 
-const CustomCard = ({ label, value }: Props) => {
+const CustomCard = memo(({ label, value }: Props) => {
   return (
     <Card>
       <Text
@@ -26,6 +27,6 @@ const CustomCard = ({ label, value }: Props) => {
       </Text>
     </Card>
   );
-};
+});
 
 export { CustomCard };
