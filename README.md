@@ -12,8 +12,7 @@
 ```shell
 npm run docker:up
 ```
-
-3. ## Open the link
+3. Open the link
 
 ```shell
 http://localhost:3001
