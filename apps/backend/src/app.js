@@ -46,7 +46,7 @@ app.use(errorHandler)
 
 setTimeout(() => {
   setInterval(() => {
-    run(20)
+    run(5)
   }, 10000)
 }, 10000)
 
