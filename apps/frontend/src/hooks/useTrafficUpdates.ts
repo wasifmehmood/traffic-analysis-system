@@ -45,6 +45,15 @@ const useTrafficUpdates = () => {
     };
   }, [attempt]);
 
+  useEffect(() => {
+    const api = async () => {
+      const response = await fetch(`${env.API_URL}/v1/analytics`);
+      const data = await response.json();
+      console.log('daaaaaa', data);
+    };
+    api();
+  }, []);
+
   return { trafficData };
 };
 

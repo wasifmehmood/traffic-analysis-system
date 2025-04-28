@@ -49,5 +49,12 @@ export default (sequelize, DataTypes) => {
     }
   )
 
+  Addresses.associate = function (models) {
+    Addresses.belongsTo(models.Countries, {
+      foreignKey: 'fk_country_id',
+      as: 'country'
+    })
+  }
+
   return Addresses
 }

@@ -54,9 +54,18 @@ export default (sequelize, DataTypes) => {
   )
 
   TrafficEvents.associate = function (models) {
-    TrafficEvents.belongsTo(models.Sensors)
-    TrafficEvents.belongsTo(models.VehicleTypes)
-    TrafficEvents.belongsTo(models.Violations)
+    TrafficEvents.belongsTo(models.Sensors, {
+      foreignKey: 'fk_sensor_id',
+      as: 'sensor'
+    })
+    TrafficEvents.belongsTo(models.VehicleTypes, {
+      foreignKey: 'fk_vehicle_type_id',
+      as: 'vehicle_type'
+    })
+    TrafficEvents.belongsTo(models.Violations, {
+      foreignKey: 'fk_violation_id',
+      as: 'violation'
+    })
   }
 
   TrafficEvents.insertEvents = function (events) {
@@ -79,6 +88,102 @@ export default (sequelize, DataTypes) => {
       fk_address_id,
       speed_kph
     })
+  }
+
+  TrafficEvents.getTrafficViolationAnalytics = async function () {
+    const data = await TrafficEvents.findAll({
+      attributes: [
+        'fk_violation_id',
+        [
+          TrafficEvents.sequelize.fn(
+            'COUNT',
+            TrafficEvents.sequelize.col('fk_violation_id')
+          ),
+          'count'
+        ],
+        [
+          TrafficEvents.sequelize.fn(
+            'AVG',
+            TrafficEvents.sequelize.col('speed_kph')
+          ),
+          'avg_speed_kph'
+        ]
+      ],
+      include: [
+        {
+          association: 'violation',
+          attributes: ['name']
+        }
+      ],
+      group: ['fk_violation_id', 'violation.id']
+    })
+
+    return data
+  }
+
+  TrafficEvents.getTrafficViolationCount = async function () {
+    const data = await TrafficEvents.count({})
+
+    return data
+  }
+
+  TrafficEvents.getTrafficViolationByCountry = async function () {
+    const data = await TrafficEvents.findAll({
+      attributes: [
+        'fk_violation_id',
+        [
+          TrafficEvents.sequelize.fn(
+            'COUNT',
+            TrafficEvents.sequelize.col('fk_violation_id')
+          ),
+          'count'
+        ],
+        [
+          TrafficEvents.sequelize.fn(
+            'AVG',
+            TrafficEvents.sequelize.col('speed_kph')
+          ),
+          'avg_speed_kph'
+        ],
+        'sensor->address.id',
+        'sensor->address.fk_country_id',
+        'sensor->address->country.name'
+      ],
+      include: [
+        {
+          association: 'violation',
+          attributes: ['name']
+        },
+        {
+          association: 'sensor',
+          attributes: ['fk_address_id'],
+          include: [
+            {
+              association: 'address',
+              attributes: ['id', 'fk_country_id'],
+              include: [
+                {
+                  association: 'country',
+                  attributes: ['name'],
+                  required: true
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      group: [
+        'fk_violation_id',
+        'violation.id',
+        'sensor.id',
+        'sensor->address.id',
+        'sensor->address->country.id',
+        'sensor->address.fk_country_id',
+        'sensor->address->country.name'
+      ]
+    })
+
+    return data
   }
 
   return TrafficEvents

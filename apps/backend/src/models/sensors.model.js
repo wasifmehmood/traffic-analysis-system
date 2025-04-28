@@ -29,5 +29,12 @@ export default (sequelize, DataTypes) => {
     { timestamps: true, createdAt: 'created_at', updatedAt: 'updated_at' }
   )
 
+  Sensors.associate = function (models) {
+    Sensors.belongsTo(models.Addresses, {
+      foreignKey: 'fk_address_id',
+      as: 'address'
+    })
+  }
+
   return Sensors
 }

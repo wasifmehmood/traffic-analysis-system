@@ -1,4 +1,4 @@
-import { db as Models } from '../models/index.js'
+import { db as Models} from '../models/index.js'
 import { addClient, removeClient } from '../utils/sseManager.js'
 
 export const postTrafficEvent = async (req, res) => {
@@ -25,14 +25,34 @@ export const postTrafficEvent = async (req, res) => {
     data: trafficEvents
   })
 }
-export const getTrafficEvents = (req, res) => {
-  res.send('respond with a resource')
+export const getAnalytics = async (req, res) => {
+  const [
+    analyticsCount,
+    analytics,
+    trafficViolationAnalyticsByDay,
+    trafficViolationByCountry
+  ] = await Promise.all([
+    Models.TrafficEvents.getTrafficViolationCount(),
+    Models.TrafficEvents.getTrafficViolationAnalytics(),
+    Models.TrafficEvents.getTrafficViolationByCountry()
+  ])
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      analyticsCount,
+      analytics,
+      trafficViolationAnalyticsByDay,
+      trafficViolationByCountry
+    }
+  })
 }
 
 export const subscribeToTrafficEvents = async (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream')
   res.setHeader('Cache-Control', 'no-cache')
   res.setHeader('Connection', 'keep-alive')
+
   const initialData = await Models.TrafficEvents.findAll({ raw: true })
   res.write(`data: ${JSON.stringify(initialData)}\n\n`)
 

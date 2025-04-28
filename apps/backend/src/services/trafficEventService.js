@@ -1,4 +1,4 @@
-import Models from '../models/index.js'
+import { db as Models } from '../models/index.js'
 import { Kafka } from 'kafkajs'
 import { notifyClients } from '../utils/sseManager.js'
 

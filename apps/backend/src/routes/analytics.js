@@ -1,8 +1,8 @@
 import express from 'express'
 const router = express.Router()
 
-router.get('/', function (req, res) {
-  res.send('respond with a resource')
-})
+import { getAnalytics } from '../controllers/analytics.js'
+
+router.get('/', getAnalytics)
 
 export default router

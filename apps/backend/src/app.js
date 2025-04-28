@@ -5,6 +5,15 @@ import router from './routes/index.js'
 import { errorHandler } from './middlewares/errorHandler.js'
 import { notFound } from './middlewares/notFound.js'
 import { initTrafficEventService } from './services/trafficEventService.js'
+import { dbInitializationPromise } from './models/index.js'
+
+try {
+  await dbInitializationPromise()
+  console.log('Database initialized successfully.')
+} catch (error) {
+  console.error('Error initializing the database:', error)
+  process.exit(1) // Exit the process on database initialization failure
+}
 
 const app = express()
 

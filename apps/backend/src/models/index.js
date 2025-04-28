@@ -7,8 +7,6 @@ import { camelCase, upperFirst } from 'lodash-es'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-const db = {}
-
 let sequelize = new Sequelize(
   config.get('db.name'),
   config.get('db.username'),
@@ -29,7 +27,10 @@ let sequelize = new Sequelize(
     }
   }
 )
-;(async () => {
+
+const db = {}
+
+const initializeDatabase = async () => {
   try {
     await sequelize.authenticate()
     console.info('Connection has been established successfully.')
@@ -37,28 +38,31 @@ let sequelize = new Sequelize(
     console.error('Unable to connect to the database:', err)
     throw err
   }
-})()
 
-readdirSync(__dirname)
-  .filter((file) => {
-    return file.endsWith('.model.js')
-  })
-  .forEach(async (file) => {
+  const modelFiles = readdirSync(__dirname).filter((file) =>
+    file.endsWith('.model.js')
+  )
+
+  for (const file of modelFiles) {
     const model = (await import(join(__dirname, file))).default(
       sequelize,
       Sequelize.DataTypes
     )
     let name = upperFirst(camelCase(model.name))
     db[name] = model
+  }
+
+  Object.keys(db).forEach((modelName) => {
+    if (db[modelName].associate) {
+      db[modelName].associate(db)
+    }
   })
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db)
-  }
-})
+  db.sequelize = sequelize
+  db.Sequelize = Sequelize
+}
 
-db.sequelize = sequelize
-db.Sequelize = Sequelize
+const dbInitializationPromise = initializeDatabase
 
-export default db
+// Exporting the promise so it can be awaited
+export { dbInitializationPromise, db }
