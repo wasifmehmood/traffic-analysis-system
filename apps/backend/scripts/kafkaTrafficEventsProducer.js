@@ -47,9 +47,9 @@ const sendTrafficEvents = async (numEvents) => {
   }
 }
 
-const run = async () => {
+export const run = async (noOfEvents = 500) => {
   await producer.connect()
-  await sendTrafficEvents(500)
+  await sendTrafficEvents(noOfEvents)
   await producer.disconnect()
 }
 

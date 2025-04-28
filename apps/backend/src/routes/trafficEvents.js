@@ -10,9 +10,9 @@ import {
 } from '../controllers/trafficEvents.js'
 
 router.post('/', postTrafficEvent)
-router.get('/:id', getTrafficEvent)
 router.get('/', getTrafficEvents)
 router.delete('/:id', deleteTrafficEvent)
 router.get('/subscribe', subscribeToTrafficEvents)
+router.get('/:id', getTrafficEvent)
 
 export default router

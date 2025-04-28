@@ -133,6 +133,8 @@ export const subscribeToTrafficEvents = async (req, res) => {
     res.setHeader('Cache-Control', 'no-cache')
     res.setHeader('Connection', 'keep-alive')
 
+    res.flushHeaders()
+
     const [
       violationsCount,
       violationsByVehicleType,
@@ -156,18 +158,21 @@ export const subscribeToTrafficEvents = async (req, res) => {
       })}\n\n`
     )
 
+    const heartbeatId = setInterval(() => {
+      res.write(':keep-alive\n\n')
+    }, 20000)
+
     addClient(res)
 
     req.on('close', () => {
+      clearInterval(heartbeatId)
       removeClient(res)
+      res.end()
     })
   } catch (error) {
     logger.error(
       `[subscribeToTrafficEvents] Error subscribing to traffic events: ${error}`
     )
-    res.status(500).json({
-      status: 'error',
-      message: 'Internal Server Error'
-    })
+    res.end()
   }
 }

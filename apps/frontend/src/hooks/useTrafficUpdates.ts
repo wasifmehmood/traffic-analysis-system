@@ -70,7 +70,6 @@ const useTrafficUpdates = () => {
       setViolationsByVehicleType(data.violationsByVehicleType);
       setRecentTrafficViolations(data.recentTrafficViolations);
       setSpeedViolationsInLastHour(data.speedViolationsInLastHour);
-      //   setTrafficData((prev) => [...prev, data]);
     };
 
     eventSource.onerror = (error) => {

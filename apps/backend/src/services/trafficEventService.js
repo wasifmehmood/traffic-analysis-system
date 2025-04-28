@@ -3,7 +3,7 @@ import { Kafka } from 'kafkajs'
 import { notifyClients } from '../utils/sseManager.js'
 import { logger } from '../utils/logger.js'
 
-const BATCH_SIZE = 50
+const BATCH_SIZE = 40
 let batch = []
 
 export const initTrafficEventService = async () => {

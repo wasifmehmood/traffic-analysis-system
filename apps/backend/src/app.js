@@ -7,6 +7,7 @@ import { notFound } from './middlewares/notFound.js'
 import { initTrafficEventService } from './services/trafficEventService.js'
 import { dbInitializationPromise } from './models/index.js'
 import { logger } from './utils/logger.js'
+import { run } from '../scripts/kafkaTrafficEventsProducer.js'
 
 try {
   await dbInitializationPromise()
@@ -42,5 +43,11 @@ initTrafficEventService()
 
 app.use(notFound)
 app.use(errorHandler)
+
+setTimeout(() => {
+  setInterval(() => {
+    run(20)
+  }, 10000)
+}, 10000)
 
 export default app
