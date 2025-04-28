@@ -1,3 +1,8 @@
+### Important Links
+
+[see below](#scalable-architecture)
+[see below](#dev-flow)
+
 ## Prerquisites
 
 - clone this repo
@@ -9,9 +14,11 @@
 
 1. Open/Run Docker
 2. In the root
+
 ```shell
 npm run docker:up
 ```
+
 3. Open the link
 
 ```shell
@@ -27,3 +34,11 @@ http://localhost:3001
 ### Database Architecture
 
 ![Alt text](./architecture/db-structure-1.png?raw=true "Title")
+
+# Scalable Architecture
+
+![Alt text](./architecture/Scalable-Architecture?raw=true "Title")
+
+# Dev Flow
+
+![Alt text](./architecture/Dev-Flow.png?raw=true "Title")
