@@ -15,7 +15,7 @@ try {
   logger.info('Database initialized successfully.')
 } catch (error) {
   logger.error('Error initializing the database:', error)
-  process.exit(1) // Exit the process on database initialization failure
+  // process.exit(1) // Exit the process on database initialization failure
 }
 
 const app = express()

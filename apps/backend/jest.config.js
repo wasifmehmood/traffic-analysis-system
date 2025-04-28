@@ -1,8 +1,8 @@
-module.exports = {
+export default {
   testEnvironment: 'node',
   collectCoverage: true,
   coverageDirectory: 'tests/coverage',
-  testMatch: ["**/*.test.js"],
+  testMatch: ['**/*.test.js'],
   transformIgnorePatterns: [
     '[/\\\\\\\\]node_modules[/\\\\\\\\].+\\\\.(js|ts)$'
   ],

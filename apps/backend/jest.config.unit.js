@@ -1,9 +1,9 @@
-const commonConfig = require('./jest.config.cjs');
+import commonConfig from './jest.config.js';
 
-module.exports = {
+export default {
   ...commonConfig,
   testMatch: [
-    '**/*.unit.test.{js,ts}'
+    '**/*.unit.test.{js,ts,mjs}'
   ],
   collectCoverageFrom: [
     '**/modules/**/*.js',

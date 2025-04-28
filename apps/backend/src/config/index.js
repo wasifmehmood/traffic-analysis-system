@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename)
 const config = convict({
   env: {
     doc: 'The application environment.',
-    format: ['production', 'development'],
+    format: ['production', 'development', 'test'],
     default: 'development',
     env: 'NODE_ENV'
   },
