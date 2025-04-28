@@ -1,7 +1,7 @@
 ### Important Links
 
-[see below](#scalable-architecture)
-[see below](#dev-flow)
+[Scalable Architecture](#scalable-architecture)
+[Dev Flow](#dev-flow)
 
 ## Prerquisites
 
