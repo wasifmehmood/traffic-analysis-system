@@ -2,6 +2,7 @@ import { db as Models } from '../models/index.js'
 import { Kafka } from 'kafkajs'
 import { notifyClients } from '../utils/sseManager.js'
 import { logger } from '../utils/logger.js'
+import config from '../config/index.js'
 
 const BATCH_SIZE = 40
 let batch = []
@@ -9,7 +10,7 @@ let batch = []
 export const initTrafficEventService = async () => {
   const kafkaConsumer = new Kafka({
     clientId: 'traffic-events',
-    brokers: ['kafka:9092']
+    brokers: [config.get('kafka.brokers')]
   })
 
   const consumer = kafkaConsumer.consumer({ groupId: 'traffic-events' })

@@ -8,6 +8,7 @@ import { initTrafficEventService } from './services/trafficEventService.js'
 import { dbInitializationPromise } from './models/index.js'
 import { logger } from './utils/logger.js'
 import { run } from '../scripts/kafkaTrafficEventsProducer.js'
+import config from './config/index.js'
 
 try {
   await dbInitializationPromise()
@@ -22,7 +23,9 @@ const app = express()
 app.use(express.static('assets'))
 app.use(helmet())
 
-const allowedOrigins = ['http://localhost:5173', 'http://localhost:3001']
+const allowedOrigins = (
+  process.env.ALLOWED_ORIGINS || 'http://localhost:3001'
+).split(',')
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -46,7 +49,7 @@ app.use(errorHandler)
 
 setTimeout(() => {
   setInterval(() => {
-    run(5)
+    run(config.get('kafka.noOfEvents'))
   }, 10000)
 }, 10000)
 

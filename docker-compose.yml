@@ -41,6 +41,8 @@ services:
       - DB_NAME=${DB_NAME:-traffic_analysis_db}
       - DB_USERNAME=${DB_USERNAME:-postgres}
       - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - KAFKA_NO_OF_EVENTS=${KAFKA_NO_OF_EVENTS:-5}
+      - ALLOWED_ORIGINS=http://localhost:3001
     depends_on:
       - postgres
       - kafka

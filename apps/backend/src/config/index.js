@@ -90,6 +90,20 @@ const config = convict({
         env: 'DB_POOL_ACQUIRE'
       }
     }
+  },
+  kafka: {
+    brokers: {
+      doc: 'Kafka brokers',
+      format: String,
+      default: 'kafka:9092',
+      env: 'KAFKA_BROKERS'
+    },
+    noOfEvents: {
+      doc: 'Number of events to be fetched from kafka',
+      format: Number,
+      default: 5,
+      env: 'KAFKA_NO_OF_EVENTS'
+    }
   }
 })
 
