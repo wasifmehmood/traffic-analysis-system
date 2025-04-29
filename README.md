@@ -32,7 +32,7 @@ http://localhost:3001
 ```shell
 npm run send:events
 ```
-NOTE: I have also added a custom scheduler to send events
+- NOTE: I have also added a custom scheduler to send events
 
 # Architectures
 
