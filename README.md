@@ -2,6 +2,8 @@
 
 [Scalable Architecture](#scalable-architecture)
 [Dev Flow](#dev-flow)
+[Frontend-1](#frontend-1)
+[Frontend-2](#frontend-2)
 
 ## Prerquisites
 
@@ -42,3 +44,11 @@ http://localhost:3001
 # Dev Flow
 
 ![Alt text](./architecture/Dev-Flow.png?raw=true "Title")
+
+# Frontend 1
+
+![Alt text](./architecture/frontend-1.png?raw=true "Title")
+
+# Frontend 2
+
+![Alt text](./architecture/frontend-2.png?raw=true "Title")
