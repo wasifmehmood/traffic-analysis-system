@@ -27,6 +27,12 @@ npm run docker:up
 http://localhost:3001
 ```
 
+4. To manually send events to kafka -> backend -> frontend
+    - While in docker exec environment of backend directory run the following command
+```shell
+npm run send:events
+```
+
 # Architectures
 
 # System Architecture
