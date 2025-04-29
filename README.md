@@ -34,6 +34,11 @@ npm run send:events
 ```
 - NOTE: I have also added a custom scheduler to send events
 
+5. To close containers run;
+```shell
+npm run docker:down
+```
+
 # Architectures
 
 # System Architecture
