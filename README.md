@@ -1,7 +1,9 @@
 ### Important Links
 
-[Scalable Architecture](#scalable-architecture)
-[Dev Flow](#dev-flow)
+[System Architecture](#system-architecture)
+[Database Architecture](#database-architecture)
+[Scalable Architecture (Desired)](#scalable-architecture)
+[Dev Flow (Desired)](#dev-flow)
 [Frontend-1](#frontend-1)
 [Frontend-2](#frontend-2)
 
